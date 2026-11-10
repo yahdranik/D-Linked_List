@@ -12,6 +12,7 @@
 
 #define LIST_DUMP(html, list)   list_dump(html, &list, __FILE__, __FUNCTION__, __LINE__)
 #define PRINT_LIST_ERROR(code) fprintf(log, "\nCode: %d\n", code)
+#define CHECK_LIST_ERROR(error, checked) ((error & checked) == checked)
 
 #define LOG_FILE  "Doubly_Linked_List/list_logs.log"
 #define HTML_FILE "Doubly_Linked_List/list_dump.html"
@@ -48,19 +49,19 @@ enum list_error_t
 
 enum list_error_codes
 {
-    LIST_OKAY,  
-    LIST_NOT_MEMORY,
-    LIST_NULL_ADRESS,
-    LIST_INCORRECT_SIZE,
-    LIST_DATA_NULL_ASDRESSES,
-    LIST_INCORRECT_CAPACITY,
-    LIST_SERVICE_CELL_INCORRECT,
-    LIST_OCCUPIED_PTR_INCORRECT,
-    LIST_OCCUPIED_CONNECT_INCORRECT,
-    LIST_FREE_CONNECT_INCORRECT,
-    LIST_FREE_PTR_INCORRECT,
-    LIST_INCORRECT_INDEX,
-    LIST_LOOP
+    LIST_OKAY                       = 0,  
+    LIST_NOT_MEMORY                 = 1<<1,
+    LIST_NULL_ADRESS                = 1<<2,
+    LIST_INCORRECT_SIZE             = 1<<3,
+    LIST_DATA_NULL_ASDRESSES        = 1<<4,
+    LIST_INCORRECT_CAPACITY         = 1<<5,
+    LIST_SERVICE_CELL_INCORRECT     = 1<<6,
+    LIST_OCCUPIED_PTR_INCORRECT     = 1<<7,
+    LIST_OCCUPIED_CONNECT_INCORRECT = 1<<8,
+    LIST_FREE_CONNECT_INCORRECT     = 1<<9,
+    LIST_FREE_PTR_INCORRECT         = 1<<10,
+    LIST_INCORRECT_INDEX            = 1<<11,
+    LIST_LOOP                       = 1<<12
 };
 
 // PROTOTYPES -----------------------------------------------------------------------

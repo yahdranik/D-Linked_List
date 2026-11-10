@@ -1,5 +1,6 @@
 
 Code: 0
+OK!
 Dump was summoned in
       file: == ./Doubly_Linked_List/d_list.cpp ==
       function: == main ==
@@ -7,10 +8,10 @@ Dump was summoned in
 
 Current parametres:
 ====== struct LIST_T ======
-       list: [0x74638ebf0020]    
-       data: [0x74d38ffe0090]    
-       nexts: [0x74a38ffe0050]   
-       prefs: [0x74a38ffe0010]   
+       list: [0x74480f3f0020]    
+       data: [0x74b8107e0090]    
+       nexts: [0x7488107e0050]   
+       prefs: [0x7488107e0010]   
        capacity: 9 
                      
 ======= DATA =======

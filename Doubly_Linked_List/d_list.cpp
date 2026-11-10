@@ -419,10 +419,28 @@ list_error_t list_verify_free(list_t* list)
     return LIST_SUCCESS;
 }
 
+void list_logger(FILE* log, list_error_code_t error)
+{
+    if      (CHECK_LIST_ERROR(error, LIST_NOT_MEMORY))                  fprintf(log, "FATAL: not memory\n");
+    else if (CHECK_LIST_ERROR(error, LIST_NULL_ADRESS))                 fprintf(log, "ERROR: adress list is NULL\n");
+    else if (CHECK_LIST_ERROR(error, LIST_DATA_NULL_ASDRESSES))         fprintf(log, "ERROR: adress list data is NULL\n");
+    else if (CHECK_LIST_ERROR(error, LIST_INCORRECT_INDEX))             fprintf(log, "ERROR: referencing list with incorrect index\n");
+    else if (CHECK_LIST_ERROR(error, LIST_INCORRECT_SIZE))              fprintf(log, "ERROR: list size is incorrect\n");
+    else if (CHECK_LIST_ERROR(error, LIST_INCORRECT_CAPACITY))          fprintf(log, "ERROR: list capacity is incorrect\n");
+    else if (CHECK_LIST_ERROR(error, LIST_SERVICE_CELL_INCORRECT))      fprintf(log, "ERROR: service cell [0] is incorrect\n");
+    else if (CHECK_LIST_ERROR(error, LIST_OCCUPIED_PTR_INCORRECT))      fprintf(log, "ERROR: incorrect pointer on occupied cells\n");
+    else if (CHECK_LIST_ERROR(error, LIST_OCCUPIED_CONNECT_INCORRECT))  fprintf(log, "ERROR: connect of occupied cells is incorrect\n");
+    else if (CHECK_LIST_ERROR(error, LIST_FREE_PTR_INCORRECT))          fprintf(log, "ERROR: incorrect pointer on free cells\n");
+    else if (CHECK_LIST_ERROR(error, LIST_FREE_CONNECT_INCORRECT))      fprintf(log, "ERROR: connect of free cells is incorrect\n");
+    else if (CHECK_LIST_ERROR(error, LIST_LOOP))                        fprintf(log, "ERROR: list has loops\n");
+    else fprintf(log, "OK!\n");
+}
+
 void list_dump(FILE* html, list_t* list, const char* file_name, const char* func_name, int line)
 {
     FILE* log = fopen(LOG_FILE, "w");
     PRINT_LIST_ERROR((int) list->error);
+    list_logger(log, list->error);
 
     fprintf(log,"Dump was summoned in\n"
                 "      file: == %s ==\n"       
@@ -545,7 +563,7 @@ void list_dump(FILE* html, list_t* list, const char* file_name, const char* func
     char script[1000] = {};
     
     snprintf(file_name_listing, 1000, "report/list%d.png",  counter_dumps);
-    snprintf(script, 1000, "dot -Tpng Doubly_Linked_List/list.dot -o %s", file_name_listing);
+    snprintf(script, 1000, "dot -Tpng Doubly_Linked_List/list.dot -o Doubly_Linked_List/%s", file_name_listing);
     // printf("%s\n", script);
     system(script);
     // system("echo hui");
