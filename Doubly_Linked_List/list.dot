@@ -1,0 +1,122 @@
+/* Auto generate code */
+
+digraph G {
+rankdir=LR;
+bgcolor="#E6E6FA";
+node [fontsize=12, shape=box, style="filled, rounded", color="#23033a", fontname="Georgia"];
+edge[color="#23033a"];
+
+n0 [fillcolor="#a094ef", label=<<table border="0" cellborder="0" cellspacing="0" cellpadding="4">
+<tr>
+  <td colspan="2" border="1" sides="b"><b>index:</b> 0</td>
+</tr>
+<tr>
+  <td colspan="2" border="1" sides="b"><b>value:</b> BEBEBE</td>
+</tr>
+<tr>  <td border="1" sides="r"><b>next:</b> 1</td>
+  <td><b>pref:</b> 3</td>
+</tr>
+</table>>];
+n1 [fillcolor="#c383ff", label=<<table border="0" cellborder="0" cellspacing="0" cellpadding="4">
+<tr>
+  <td colspan="2" border="1" sides="b"><b>index:</b> 1</td>
+</tr>
+<tr>
+  <td colspan="2" border="1" sides="b"><b>value:</b> A539F</td>
+</tr>
+<tr>  <td border="1" sides="r"><b>next:</b> 3</td>
+  <td><b>pref:</b> 0</td>
+</tr>
+</table>>];
+n2 [fillcolor="#DDA0DD", label=<<table border="0" cellborder="0" cellspacing="0" cellpadding="4">
+<tr>
+  <td colspan="2" border="1" sides="b"><b>index:</b> 2</td>
+</tr>
+<tr>
+  <td colspan="2" border="1" sides="b"><b>value:</b> BEBEBE</td>
+</tr>
+<tr>  <td border="1" sides="r"><b>next:</b> -4</td>
+  <td><b>pref:</b> 0</td>
+</tr>
+</table>>];
+n3 [fillcolor="#c383ff", label=<<table border="0" cellborder="0" cellspacing="0" cellpadding="4">
+<tr>
+  <td colspan="2" border="1" sides="b"><b>index:</b> 3</td>
+</tr>
+<tr>
+  <td colspan="2" border="1" sides="b"><b>value:</b> A539F</td>
+</tr>
+<tr>  <td border="1" sides="r"><b>next:</b> 0</td>
+  <td><b>pref:</b> 1</td>
+</tr>
+</table>>];
+n4 [fillcolor="#DDA0DD", label=<<table border="0" cellborder="0" cellspacing="0" cellpadding="4">
+<tr>
+  <td colspan="2" border="1" sides="b"><b>index:</b> 4</td>
+</tr>
+<tr>
+  <td colspan="2" border="1" sides="b"><b>value:</b> BEBEBE</td>
+</tr>
+<tr>  <td border="1" sides="r"><b>next:</b> -5</td>
+  <td><b>pref:</b> -2</td>
+</tr>
+</table>>];
+n5 [fillcolor="#DDA0DD", label=<<table border="0" cellborder="0" cellspacing="0" cellpadding="4">
+<tr>
+  <td colspan="2" border="1" sides="b"><b>index:</b> 5</td>
+</tr>
+<tr>
+  <td colspan="2" border="1" sides="b"><b>value:</b> BEBEBE</td>
+</tr>
+<tr>  <td border="1" sides="r"><b>next:</b> -6</td>
+  <td><b>pref:</b> -4</td>
+</tr>
+</table>>];
+n6 [fillcolor="#DDA0DD", label=<<table border="0" cellborder="0" cellspacing="0" cellpadding="4">
+<tr>
+  <td colspan="2" border="1" sides="b"><b>index:</b> 6</td>
+</tr>
+<tr>
+  <td colspan="2" border="1" sides="b"><b>value:</b> BEBEBE</td>
+</tr>
+<tr>  <td border="1" sides="r"><b>next:</b> -7</td>
+  <td><b>pref:</b> -5</td>
+</tr>
+</table>>];
+n7 [fillcolor="#DDA0DD", label=<<table border="0" cellborder="0" cellspacing="0" cellpadding="4">
+<tr>
+  <td colspan="2" border="1" sides="b"><b>index:</b> 7</td>
+</tr>
+<tr>
+  <td colspan="2" border="1" sides="b"><b>value:</b> BEBEBE</td>
+</tr>
+<tr>  <td border="1" sides="r"><b>next:</b> -8</td>
+  <td><b>pref:</b> -6</td>
+</tr>
+</table>>];
+n8 [fillcolor="#DDA0DD", label=<<table border="0" cellborder="0" cellspacing="0" cellpadding="4">
+<tr>
+  <td colspan="2" border="1" sides="b"><b>index:</b> 8</td>
+</tr>
+<tr>
+  <td colspan="2" border="1" sides="b"><b>value:</b> BEBEBE</td>
+</tr>
+<tr>  <td border="1" sides="r"><b>next:</b> 0</td>
+  <td><b>pref:</b> -7</td>
+</tr>
+</table>>];
+
+n0 -> n1 -> n2 -> n3 -> n4 -> n5 -> n6 -> n7 -> n8 [style=invis, penwidth = 1];
+n2 -> n4 [label = "free", style = dotted, constraint=false];
+n4 -> n5 [label = "free", style = dotted, constraint=false];
+n5 -> n6 [label = "free", style = dotted, constraint=false];
+n6 -> n7 [label = "free", style = dotted, constraint=false];
+n7 -> n8 [label = "free", style = dotted, constraint=false];
+n1 -> n3 [label = "occupied", style = filled, constraint=false];
+n9 [label="HEAD", fillcolor="#c383ff"];
+n10 [label="TAIL", fillcolor="#c383ff"];
+{ rank=same; n9; n3 }
+{ rank=same; n10; n1 }
+n9 -> n3 [style = filled, renwidth = 5.0]
+n10 -> n1 [style = filled, renwidth = 5.0]
+}

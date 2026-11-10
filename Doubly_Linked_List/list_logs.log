@@ -1,0 +1,32 @@
+
+Code: 0
+Dump was summoned in
+      file: == ./Doubly_Linked_List/d_list.cpp ==
+      function: == main ==
+      line: == 29 ==
+
+Current parametres:
+====== struct LIST_T ======
+       list: [0x74638ebf0020]    
+       data: [0x74d38ffe0090]    
+       nexts: [0x74a38ffe0050]   
+       prefs: [0x74a38ffe0010]   
+       capacity: 9 
+                     
+======= DATA =======
+[0]                [1]
+value: 12500670     value: 676767    
+next:  1            next:  3  
+prev:  3            prev:  0  
+[2]                [3]
+value: 12500670     value: 676767    
+next:  -4           next:  0  
+prev:  0            prev:  1  
+[4]                [5]
+value: 12500670     value: 12500670  
+next:  -5           next:  -6 
+prev:  -2           prev:  -4 
+[6]                [7]
+value: 12500670     value: 12500670  
+next:  -7           next:  -8 
+prev:  -5           prev:  -6 
