@@ -20,47 +20,47 @@ _Двусвязные списки_  — это базовая структур�
 ### Пользовательский двусвязный список
 
 * Установить WSL
-'''
+```
 wsl --install -d Ubuntu
-'''
+```
 
 * Установить компилятор и Graphviz:
-'''
+```
 sudo apt update
 sudo apt install build-essential graphviz
-'''
+```
 
 * Скомпилировать программу
-'''
+```
 Doubly_Linked_List/d_list.sh
-'''
+```
 
 * Запустить программу
-'''
+```
 ./Doubly_Linked_List/mimimi.exe
-''''
+```'
 
 * Открыть HTML отчёт
 
 #### Программа сравнения производительности для двух версий реализации двусвязных списков: массив структур и структура массивов
 * Установить GNUPLOT 
-'''
+```
 sudo apt install build-essential gnuplot
-'''
+```
 
 * Скомпилировать программы для SLOWLY, QUIK версий и общbq MAIN для получения гистограммы сравнения производительностей
-'''
+```
 Doubly_Linked_List/SLOWLY_LIST/slowly_d_list.sh
 
 Doubly_Linked_List/QUICK_LIST/quick_d_list.sh
 
 Doubly_Linked_List/myscriptt.sh
-'''
+```
 
 * Запустить программу
-'''
+```
 ./mimimi.exe
-'''
+```
 
 * Открыть итоговый файл histograms.png
 
