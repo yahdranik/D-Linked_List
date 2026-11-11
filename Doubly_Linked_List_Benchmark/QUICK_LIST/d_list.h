@@ -11,7 +11,7 @@
 #define MY_END_CUSTOM          "\033[0m"
 #define MY_RED_AND_BOLD        "\033[1;31m"
 
-#define LIST_DUMP(html, list)   list_dump(html, &list, __FILE__, __FUNCTION__, __LINE__)
+#define LIST_DUMP(html, list)  list_dump(html, &list, __FILE__, __FUNCTION__, __LINE__)
 #define PRINT_LIST_ERROR(code) fprintf(log, "\nCode: %d\n", code)
 
 #define QUICK_LIST_TESTS "Doubly_Linked_List_Benchmark/QUICK_LIST/quick_list.txt"

@@ -1,5 +1,6 @@
 #include "d_list.h"
 
+// TODO сложные тесты сделать и редми написать 
 static int counter_dumps = 0;
 
 int main()
@@ -12,26 +13,31 @@ int main()
             "<head>\n"
             "<meta charset=\"UTF-8\">\n"
             "<title>List dump</title>\n"
-            "<style>body { background-color: #E6E6FA; font-family: monospace; }</style>\n"
+            "<style>body { background-color: #f2dbf8; font-family: monospace; }</style>\n"
             "</head>\n"
             "<body>\n");
 
     list_t list = {};
     list_init(&list, INIT_LIST_CAPACITY);
 
-    list_append(&list, 676767., 0);
-    LIST_DUMP(html, list);
-    list_append(&list, 676767., 1);
-    LIST_DUMP(html, list);
-    list_append(&list, 676767., 2);
-    LIST_DUMP(html, list);
-    list_delete(&list, 1);
-    LIST_DUMP(html, list);
-
+    list_testing(html, &list);
     list_destroy(&list);
     fprintf(html, "</body>\n</html>\n");
 
     fclose(html);
+}
+
+void list_testing(FILE* html, list_t* list)
+{
+    list_append(list, 676767., 0);
+    list_append(list, 676767., 1);
+    list_append(list, 676767., 2);
+    list_append(list, 676767., 0);
+    list_append(list, 676767., 1);
+    list_append(list, 676767., 2);
+    LIST_DUMP(html, list);
+    list_delete(list, 1);
+    LIST_DUMP(html, list);
 }
 
 list_error_t list_init(list_t* list, size_t size)
@@ -436,7 +442,98 @@ void list_logger(FILE* log, list_error_code_t error)
     else fprintf(log, "OK!\n");
 }
 
-void list_dump(FILE* html, list_t* list, const char* file_name, const char* func_name, int line)
+void create_list_dot_file(FILE* dot, const list_t* list)
+{
+    fprintf(dot, "/* Auto generate code */\n\n");
+    fprintf(dot, "digraph G {\n");
+    fprintf(dot, "rankdir=LR;\n");
+    fprintf(dot, "bgcolor=\"#f2dbf8\";\n"
+             "splines=ortho;\n"
+             "forcelabels=true;\n"
+             "nodesep=1.;\n"
+             "ranksep=1.;\n"
+             "forcelabels=true;\n");
+    fprintf(dot, "node [fontsize=12, shape=box, style=\"filled, rounded\", color=\"#23033a\", fontname=\"Georgia\"];\n");
+    fprintf(dot, "edge [labelfloat=false, labelangle=25, labeldistance=2.5];\n\n");
+
+    fprintf(dot, "n0 [fillcolor=\"#a094ef\", label=<<table border=\"0\" cellborder=\"0\" cellspacing=\"0\" cellpadding=\"4\">\n" 
+                        "<tr>\n"
+                        "  <td colspan=\"2\" border=\"1\" sides=\"b\"><b>index:</b> 0</td>\n"
+                        "</tr>\n"
+                        "<tr>\n"
+                        "  <td colspan=\"2\" border=\"1\" sides=\"b\"><b>value:</b> %X</td>\n"
+                        "</tr>\n"
+                        "<tr>"
+                        "  <td border=\"1\" sides=\"r\"><b>next:</b> %d</td>\n"
+                        "  <td><b>pref:</b> %d</td>\n"
+                        "</tr>\n"
+                        "</table>>];\n",
+                    (unsigned int)(uintptr_t)list->data[0], list->nexts[0], list->prefs[0]);
+
+    for (size_t i = 1; i < list->capacity; i++)
+    {
+        const char* color = (list->nexts[i] < 0 || list->prefs[i] < 0) ? "#DDA0DD" : "#c383ff";
+
+        fprintf(dot, "n%zu [fillcolor=\"%s\", label=<<table border=\"0\" cellborder=\"0\" cellspacing=\"0\" cellpadding=\"4\">\n" 
+                    "<tr>\n"
+                    "  <td colspan=\"2\" border=\"1\" sides=\"b\"><b>index:</b> %zu</td>\n"
+                    "</tr>\n"
+                    "<tr>\n"
+                    "  <td colspan=\"2\" border=\"1\" sides=\"b\"><b>value:</b> %X</td>\n"
+                    "</tr>\n"
+                    "<tr>"
+                    "  <td border=\"1\" sides=\"r\"><b>next:</b> %d</td>\n"
+                    "  <td><b>pref:</b> %d</td>\n"
+                    "</tr>\n"
+                    "</table>>];\n",
+                i, color, i, (uint32_t) list->data[i], list->nexts[i], list->prefs[i]);
+    }
+
+    fprintf(dot, "\n");
+
+    for (size_t i = 0; i < list->capacity - 1; i++)
+    {
+        fprintf(dot, "n%zu -> ", i);
+    }
+    fprintf(dot, "n%zu [style=invis, penwidth = 1];\n", list->capacity - 1);
+
+    int current = (int)list->first_free;
+    while (current != 0)
+    {
+        int next = -list->nexts[current];
+
+        if (next != 0)
+        {
+            fprintf(dot, "n%d -> n%d [xlabel = \"free\", style = dotted, fontsize=12, constraint=false];\n", current, next);
+        }
+        current = next;
+    }
+
+    current = list->nexts[0];
+    while (current != 0)
+    {
+        int next = list->nexts[current];
+
+        if (next != 0)
+        {
+            fprintf(dot, "n%d -> n%d [style = filled, fontsize=12, constraint=false];\n", current, next);
+        }
+        current = next;
+    }
+
+    fprintf(dot, "n%zu [label=\"HEAD\", fillcolor=\"#c383ff\"];\n", list->capacity);
+    fprintf(dot, "n%zu [label=\"TAIL\", fillcolor=\"#c383ff\"];\n", list->capacity + 1);
+
+    fprintf(dot, "{ rank=same; n%zu; n%d }\n", list->capacity, list->prefs[0]);
+    fprintf(dot, "{ rank=same; n%zu; n%d }\n", list->capacity + 1, list->nexts[0]);
+
+    fprintf(dot, "n%zu -> n%d [style = filled, renwidth = 5.0]\n", list->capacity, list->prefs[0]);
+    fprintf(dot, "n%zu -> n%d [style = filled, renwidth = 5.0]\n", list->capacity + 1, list->nexts[0]);
+
+    fprintf(dot, "}\n");
+}
+
+void list_dump(FILE* html, const list_t* list, const char* file_name, const char* func_name, int line)
 {
     FILE* log = fopen(LOG_FILE, "w");
     PRINT_LIST_ERROR((int) list->error);
@@ -474,89 +571,7 @@ void list_dump(FILE* html, list_t* list, const char* file_name, const char* func
 // GRAPHIC DUMP ---------------------------------------------------------------------
 
     FILE* dot = fopen(DOT_FILE, "w");
-
-    fprintf(dot, "/* Auto generate code */\n\n");
-    fprintf(dot, "digraph G {\n");
-    fprintf(dot, "rankdir=LR;\n");
-    fprintf(dot, "bgcolor=\"#E6E6FA\";\n");
-    fprintf(dot, "node [fontsize=12, shape=box, style=\"filled, rounded\", color=\"#23033a\", fontname=\"Georgia\"];\n");
-    fprintf(dot, "edge[color=\"#23033a\"];\n\n");
-
-    fprintf(dot, "n0 [fillcolor=\"#a094ef\", label=<<table border=\"0\" cellborder=\"0\" cellspacing=\"0\" cellpadding=\"4\">\n" 
-                        "<tr>\n"
-                        "  <td colspan=\"2\" border=\"1\" sides=\"b\"><b>index:</b> 0</td>\n"
-                        "</tr>\n"
-                        "<tr>\n"
-                        "  <td colspan=\"2\" border=\"1\" sides=\"b\"><b>value:</b> %X</td>\n"
-                        "</tr>\n"
-                        "<tr>"
-                        "  <td border=\"1\" sides=\"r\"><b>next:</b> %d</td>\n"
-                        "  <td><b>pref:</b> %d</td>\n"
-                        "</tr>\n"
-                        "</table>>];\n",
-                    (unsigned int)(uintptr_t)list->data[0], list->nexts[0], list->prefs[0]);
-
-    for (size_t i = 1; i < list->capacity; i++)
-    {
-        const char* color = (list->nexts[i] < 0 || list->prefs[i] < 0) ? "#DDA0DD" : "#c383ff";
-
-        fprintf(dot, "n%zu [fillcolor=\"%s\", label=<<table border=\"0\" cellborder=\"0\" cellspacing=\"0\" cellpadding=\"4\">\n" 
-                    "<tr>\n"
-                    "  <td colspan=\"2\" border=\"1\" sides=\"b\"><b>index:</b> %zu</td>\n"
-                    "</tr>\n"
-                    "<tr>\n"
-                    "  <td colspan=\"2\" border=\"1\" sides=\"b\"><b>value:</b> %X</td>\n"
-                    "</tr>\n"
-                    "<tr>"
-                    "  <td border=\"1\" sides=\"r\"><b>next:</b> %d</td>\n"
-                    "  <td><b>pref:</b> %d</td>\n"
-                    "</tr>\n"
-                    "</table>>];\n",
-                i, color, i, (unsigned int)(uintptr_t)list->data[i], list->nexts[i], list->prefs[i]);
-    }
-
-    fprintf(dot, "\n");
-
-    for (size_t i = 0; i < list->capacity - 1; i++)
-    {
-        fprintf(dot, "n%zu -> ", i);
-    }
-    fprintf(dot, "n%zu [style=invis, penwidth = 1];\n", list->capacity - 1);
-
-    int current = (int)list->first_free;
-    while (current != 0)
-    {
-        int next = -list->nexts[current];
-
-        if (next != 0)
-        {
-            fprintf(dot, "n%d -> n%d [label = \"free\", style = dotted, constraint=false];\n", current, next);
-        }
-        current = next;
-    }
-
-    current = list->nexts[0];
-    while (current != 0)
-    {
-        int next = list->nexts[current];
-
-        if (next != 0)
-        {
-            fprintf(dot, "n%d -> n%d [label = \"occupied\", style = filled, constraint=false];\n", current, next);
-        }
-        current = next;
-    }
-
-    fprintf(dot, "n%zu [label=\"HEAD\", fillcolor=\"#c383ff\"];\n", list->capacity);
-    fprintf(dot, "n%zu [label=\"TAIL\", fillcolor=\"#c383ff\"];\n", list->capacity + 1);
-
-    fprintf(dot, "{ rank=same; n%zu; n%d }\n", list->capacity, list->prefs[0]);
-    fprintf(dot, "{ rank=same; n%zu; n%d }\n", list->capacity + 1, list->nexts[0]);
-
-    fprintf(dot, "n%zu -> n%d [style = filled, renwidth = 5.0]\n", list->capacity, list->prefs[0]);
-    fprintf(dot, "n%zu -> n%d [style = filled, renwidth = 5.0]\n", list->capacity + 1, list->nexts[0]);
-
-    fprintf(dot, "}\n");
+    create_list_dot_file(dot, list);
     fclose(dot);
 
     char file_name_listing[1000] = {};
@@ -574,7 +589,7 @@ void list_dump(FILE* html, list_t* list, const char* file_name, const char* func
 
     FILE* text_file = fopen(LOG_FILE, "r");
     fprintf(html, "<img src=\"%s\" width=\"100%%\">\n", file_name_listing);
-    fprintf(html, "<hr>\n<pre>\n");
+    fprintf(html, "<pre>\n");
 
     int c = 0;
 

@@ -10,7 +10,7 @@
 #define MY_END_CUSTOM          "\033[0m"
 #define MY_RED_AND_BOLD        "\033[1;31m"
 
-#define LIST_DUMP(html, list)   list_dump(html, &list, __FILE__, __FUNCTION__, __LINE__)
+#define LIST_DUMP(html, list)  list_dump(html, list, __FILE__, __FUNCTION__, __LINE__)
 #define PRINT_LIST_ERROR(code) fprintf(log, "\nCode: %d\n", code)
 #define CHECK_LIST_ERROR(error, checked) ((error & checked) == checked)
 
@@ -75,6 +75,6 @@ list_error_t list_verify(list_t* list);
 list_error_t list_verify_free(list_t* list);
 list_error_t list_realloc_up(list_t* list, size_t new_size);
 int find_index_loc(list_t* list, size_t index);
-
-void list_dump(FILE* html, list_t* list, const char* file_name, const char* func_name, int line);
+void list_testing(FILE* html, list_t* list);
+void list_dump(FILE* html, const list_t* list, const char* file_name, const char* func_name, int line);
 #endif
