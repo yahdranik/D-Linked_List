@@ -134,7 +134,7 @@ list_error_t list_append(list_t* list, list_value_t value, size_t index) //NOTE:
     return LIST_SUCCESS;
 }
 
-int find_index_loc(list_t* list, size_t index) // TODO: добавить коды ошибок
+int find_index_loc(list_t* list, size_t index)
 {
     if (list == NULL || index > list->size) 
     {
