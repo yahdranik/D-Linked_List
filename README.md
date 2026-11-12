@@ -55,7 +55,7 @@ Doubly_Linked_List/d_list.sh
 ./Doubly_Linked_List/mimimi.exe
 ```
 
-Открыть HTML отчёт
+Открыть [HTML](Doubly_Linked_List/list_dump.html) отчёт
 
 ### Программа сравнения производительности для двух версий реализации двусвязных списков: массив структур и структура массивов
 
