@@ -1,6 +1,5 @@
 #include "d_list.h"
 
-// TODO сложные тесты сделать и редми написать 
 static int counter_dumps = 0;
 
 int main()

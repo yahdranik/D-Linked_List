@@ -2,6 +2,7 @@
 
 static int counter_dumps = 0;
 
+
 int main()
 {
     FILE* quick_list = fopen(QUICK_LIST_TESTS, "w");
